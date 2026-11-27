@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-label="Rainbow">
+  <defs>
+    <clipPath id="rb-clip">
+      <path d="M4.5 7A2 2 0 0 1 6.5 5A20.5 20.5 0 0 1 27 25.5A2 2 0 0 1 25 27.5H16A2 2 0 0 1 14 25.5A7.5 7.5 0 0 0 6.5 18A2 2 0 0 1 4.5 16V7Z"/>
+    </clipPath>
+    <radialGradient id="rb-spectrum" cx="6.5" cy="25.5" r="21" gradientUnits="userSpaceOnUse">
+      <stop offset="0.34" stop-color="#2563EB"/>
+      <stop offset="0.46" stop-color="#00B4FF"/>
+      <stop offset="0.57" stop-color="#00D66C"/>
+      <stop offset="0.70" stop-color="#FFD600"/>
+      <stop offset="0.83" stop-color="#FF7A00"/>
+      <stop offset="0.94" stop-color="#FF2644"/>
+    </radialGradient>
+  </defs>
+  <rect width="32" height="32" fill="url(#rb-spectrum)" clip-path="url(#rb-clip)"/>
+</svg>

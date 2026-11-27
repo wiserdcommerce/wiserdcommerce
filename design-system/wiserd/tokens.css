@@ -1,0 +1,64 @@
+/* WISERD Design Tokens — Canonical CSS Custom Properties
+ * Synchronized with design-system/wiserd/MASTER.md and tokens.json
+ */
+
+:root {
+  /* Colors — Surfaces & Ink */
+  --wiserd-bg: #F7F7F5;
+  --wiserd-surface: #FFFFFF;
+  --wiserd-surface-secondary: #F0F1F2;
+  --wiserd-text: #171717;
+  --wiserd-text-secondary: #6B6B6B;
+  --wiserd-border: #E5E7EB;
+
+  /* Colors — Interactive & Semantic (WCAG 2.2 AA) */
+  --wiserd-blue: #5278E8;
+  --wiserd-blue-accessible: #315FC8;
+  --wiserd-blue-hover: #274EA6;
+  --wiserd-violet: #9B7BFF;
+  --wiserd-violet-accessible: #7853D8;
+  --wiserd-mint: #55D6C2;
+  --wiserd-success: #167A67;
+  --wiserd-danger: #C81E1E;
+  --wiserd-warning: #B45309;
+
+  /* Semantic Aliases */
+  --color-background: var(--wiserd-bg);
+  --color-foreground: var(--wiserd-text);
+  --color-card: var(--wiserd-surface);
+  --color-card-foreground: var(--wiserd-text);
+  --color-muted: var(--wiserd-surface-secondary);
+  --color-muted-foreground: var(--wiserd-text-secondary);
+  --color-border: var(--wiserd-border);
+  --color-primary: var(--wiserd-blue-accessible);
+  --color-on-primary: #FFFFFF;
+  --color-ring: var(--wiserd-blue-accessible);
+  --color-destructive: var(--wiserd-danger);
+  --color-on-destructive: #FFFFFF;
+
+  /* Typography */
+  --font-heading: var(--font-bricolage), "Bricolage Grotesque", system-ui, -apple-system, sans-serif;
+  --font-body: var(--font-bricolage), "Bricolage Grotesque", system-ui, -apple-system, sans-serif;
+  --font-condensed: var(--font-barlow), "Barlow Condensed", system-ui, sans-serif;
+
+  /* Spacing Scale (Balanced Commerce Density) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* Layout & Accessibility */
+  --container-max: 1320px;
+  --header-height: 64px;
+  --focus-scroll-offset: 80px;
+  --icon-stroke: 1.65;
+}

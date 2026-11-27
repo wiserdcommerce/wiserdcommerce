@@ -1,0 +1,50 @@
+/* WISERD Three-Layer Design Tokens (Primitive -> Semantic -> Component) */
+:root {
+  /* 1. Primitive Tokens */
+  --primitive-obsidian-950: #060608;
+  --primitive-obsidian-900: #0c0e14;
+  --primitive-obsidian-800: #151823;
+  --primitive-alabaster-100: #f3f2ee;
+  --primitive-alabaster-200: #e2e0da;
+  --primitive-white: #ffffff;
+  --primitive-ink-950: #090a0f;
+  --primitive-vermilion-500: #ff4814;
+  --primitive-vermilion-300: #ffb399;
+  --primitive-cobalt-600: #0047ff;
+  --primitive-cobalt-300: #9ec0ff;
+  --primitive-amber-500: #f59e0b;
+  --primitive-emerald-500: #10b981;
+
+  /* 2. Semantic Tokens */
+  --color-bg-canvas: var(--primitive-obsidian-950);
+  --color-bg-surface: var(--primitive-obsidian-900);
+  --color-bg-elevated: var(--primitive-obsidian-800);
+  --color-bg-stage-light: var(--primitive-alabaster-100);
+  --color-primary: var(--primitive-vermilion-500);
+  --color-secondary: var(--primitive-cobalt-600);
+  --color-accent: var(--primitive-amber-500);
+  --color-success: var(--primitive-emerald-500);
+  --color-fg-primary: #f7f7f5;
+  --color-fg-secondary: #c4c7d2;
+  --color-fg-muted: #8b90a0;
+  --color-border-glass: rgba(255, 255, 255, 0.14);
+  --color-border-glass-strong: rgba(255, 255, 255, 0.28);
+
+  /* Typography & Rhythm */
+  --typography-font-heading: "Plus Jakarta Sans", system-ui, sans-serif;
+  --typography-font-serif: "Instrument Serif", Georgia, serif;
+  --typography-font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* 3. Component & Slide Tokens */
+  --slide-bg: var(--color-bg-canvas);
+  --slide-surface: var(--color-bg-surface);
+  --card-radius: 28px;
+  --pill-radius: 9999px;
+}
