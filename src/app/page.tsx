@@ -1,10 +1,10 @@
-import { readDb } from "@/lib/db";
+import { readDbAsync } from "@/lib/db";
 import { HomeClient } from "@/components/home/home-client";
 
 export const dynamic = "force-dynamic";
 
-export default function HomePage() {
-  const db = readDb();
+export default async function HomePage() {
+  const db = await readDbAsync();
   const storeMap = new Map(db.stores.map((s) => [s.id, s]));
 
   const products = db.products

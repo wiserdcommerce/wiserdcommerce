@@ -169,10 +169,16 @@ function migrateDatabaseInPlace(db: WiserdDatabase): boolean {
 
 // shortcut: single-node local JSON store; swap for PostgreSQL/Supabase adapter before multi-instance or serverless production.
 const TRANSIENT_FS_ERRORS = new Set(["EBUSY", "EPERM", "EAGAIN", "EMFILE"]);
+const READ_ONLY_FS_ERRORS = new Set(["EROFS", "EACCES", "EPERM", "ENOENT"]);
 
 function isTransientFsError(err: unknown): boolean {
   const code = (err as NodeJS.ErrnoException | null)?.code;
   return typeof code === "string" && TRANSIENT_FS_ERRORS.has(code);
+}
+
+function isReadOnlyFsError(err: unknown): boolean {
+  const code = (err as NodeJS.ErrnoException | null)?.code;
+  return typeof code === "string" && READ_ONLY_FS_ERRORS.has(code);
 }
 
 function atomicWriteJson(filePath: string, data: WiserdDatabase): void {
@@ -198,17 +204,27 @@ function atomicWriteJson(filePath: string, data: WiserdDatabase): void {
 }
 
 function ensureDbFile(): WiserdDatabase {
-  if (isSupabasePersistenceEnabled() && memoryCache) {
+  if (memoryCache) {
     return memoryCache;
   }
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-  }
-  if (!fs.existsSync(DB_FILE)) {
-    const initial = createInitialDatabase();
-    atomicWriteJson(DB_FILE, initial);
-    memoryCache = initial;
-    return initial;
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    if (!fs.existsSync(DB_FILE)) {
+      const initial = createInitialDatabase();
+      atomicWriteJson(DB_FILE, initial);
+      memoryCache = initial;
+      return initial;
+    }
+  } catch (err) {
+    if (isReadOnlyFsError(err)) {
+      // Serverless hosts (Netlify/Vercel) mount the app bundle read-only; use in-memory state backed by Supabase.
+      const initial = createInitialDatabase();
+      memoryCache = initial;
+      return initial;
+    }
+    throw err;
   }
 
   let raw: string | null = null;
@@ -234,7 +250,11 @@ function ensureDbFile(): WiserdDatabase {
     throw new Error("WISERD database structure is invalid; refusing to overwrite existing data.");
   }
   if (migrateDatabaseInPlace(parsed)) {
-    atomicWriteJson(DB_FILE, parsed);
+    try {
+      atomicWriteJson(DB_FILE, parsed);
+    } catch (err) {
+      if (!isReadOnlyFsError(err)) throw err;
+    }
   }
   memoryCache = parsed;
   return parsed;
@@ -243,6 +263,13 @@ function ensureDbFile(): WiserdDatabase {
 export function readDb(): WiserdDatabase {
   if (isSupabasePersistenceEnabled() && !supabaseHydrated) {
     void ensureSupabaseHydrated();
+  }
+  return ensureDbFile();
+}
+
+export async function readDbAsync(): Promise<WiserdDatabase> {
+  if (isSupabasePersistenceEnabled()) {
+    await ensureSupabaseHydrated();
   }
   return ensureDbFile();
 }
@@ -273,7 +300,11 @@ export function mutateDb<T>(mutator: (db: WiserdDatabase) => T): Promise<T> {
         // Serverless read-only filesystems skip local mirror safely when Supabase is active
       }
     } else {
-      atomicWriteJson(DB_FILE, db);
+      try {
+        atomicWriteJson(DB_FILE, db);
+      } catch (err) {
+        if (!isReadOnlyFsError(err)) throw err;
+      }
     }
     return result;
   };
