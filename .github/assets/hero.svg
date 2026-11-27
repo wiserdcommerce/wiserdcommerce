@@ -50,5 +50,5 @@
   <!-- Bottom hairline & pillars -->
   <line x1="56" y1="262" x2="1144" y2="262" stroke="#1E293B" />
   <text x="56" y="290" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" letter-spacing="1.1">PHYSICAL · DIGITAL · GAMING · SERVICES</text>
-  <text x="1144" y="290" text-anchor="end" fill="#60A5FA" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" letter-spacing="1.1">wiserdcommerce.netlify.app</text>
+  <text x="1144" y="290" text-anchor="end" fill="#60A5FA" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" letter-spacing="1.1">wiserd.xyz</text>
 </svg>
