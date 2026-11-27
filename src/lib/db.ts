@@ -95,7 +95,17 @@ export function shouldSeedDemoData(): boolean {
 }
 
 function createInitialDatabase(): WiserdDatabase {
-  return shouldSeedDemoData() ? createSeedDatabase() : createEmptyDatabase();
+  const initial = shouldSeedDemoData() ? createSeedDatabase() : createEmptyDatabase();
+  migrateDatabaseInPlace(initial);
+  return initial;
+}
+
+function resolveCatalogAssetUrl(url: string): string {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim().replace(/\/+$/, "");
+  if (supabaseUrl && url.startsWith("/catalog/")) {
+    return `${supabaseUrl}/storage/v1/object/public/wiserd-media${url}`;
+  }
+  return url;
 }
 
 function migrateDatabaseInPlace(db: WiserdDatabase): boolean {
@@ -150,15 +160,17 @@ function migrateDatabaseInPlace(db: WiserdDatabase): boolean {
     "/catalog/dev-service.svg": "/catalog/dev-service.webp",
   };
   for (const prod of db.products) {
-    if (catalogUpgrades[prod.imageUrl]) {
-      prod.imageUrl = catalogUpgrades[prod.imageUrl];
+    const upgraded = resolveCatalogAssetUrl(catalogUpgrades[prod.imageUrl] || prod.imageUrl);
+    if (upgraded !== prod.imageUrl) {
+      prod.imageUrl = upgraded;
       changed = true;
     }
     if (Array.isArray(prod.gallery)) {
       prod.gallery = prod.gallery.map((url) => {
-        if (catalogUpgrades[url]) {
+        const nextUrl = resolveCatalogAssetUrl(catalogUpgrades[url] || url);
+        if (nextUrl !== url) {
           changed = true;
-          return catalogUpgrades[url];
+          return nextUrl;
         }
         return url;
       });

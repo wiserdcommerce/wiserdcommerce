@@ -19,7 +19,7 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style",
       "img-src 'self' data: blob: https:",
       "font-src 'self' data:",
-      "connect-src 'self' https://accounts.google.com https://oauth2.googleapis.com",
+      "connect-src 'self' https://accounts.google.com https://oauth2.googleapis.com https://*.supabase.co wss://*.supabase.co",
       "frame-src 'self' https://accounts.google.com",
       "frame-ancestors 'none'",
     ].join("; "),
@@ -31,6 +31,13 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: projectRoot,
   images: {
     formats: ["image/avif", "image/webp"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
+    ],
     dangerouslyAllowSVG: true,
     contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
